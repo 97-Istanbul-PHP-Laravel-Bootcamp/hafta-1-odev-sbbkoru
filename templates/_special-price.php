@@ -1,3 +1,20 @@
+      <?php 
+      $brand = array_map(function($pro) {return $pro['item_brand'];}, $urunler);
+      $unique = array_unique($brand);
+      sort($unique);
+      shuffle($urunler);
+
+            // request method post
+            if($_SERVER['REQUEST_METHOD'] == "POST"){
+              if(isset($_POST['special_price_submit'])) {
+       // call method addToCart
+       $Cart->addToCart($_POST['user_id'],$_POST['item_id']);
+              }
+            }
+            $in_cart = $Cart->getCartId($product->getData('cart'));
+      
+      ?>
+      
       <!-- SPECIAL PRICE START -->
       <section id="special-price">
         <div class="container">
@@ -9,23 +26,25 @@
             <button class="btn is-checked" data-filter="*">
               Bütün Markalar
             </button>
-            <button class="btn" data-filter=".Apple">Apple</button>
-            <button class="btn" data-filter=".Samsung">Samsung</button>
-            <button class="btn" data-filter=".Redmi">Redmi</button>
+            <?php array_map(function($brand){
+              printf('<button class="btn" data-filter=".%s">%s</button>',$brand,$brand);
+              }, $unique)?>
+            
             <hr />
           </div>
           <div class="grid">
-            <div class="grid-item Apple border">
+            <?php array_map(function($item) use($in_cart){?>
+            <div class="grid-item border <?php echo $item['item_brand'] ?? "Brand"; ?>">
               <div class="item py-2" style="width: 200px">
                 <div class="product font-rale">
-                  <a href="#"
+                  <a href="<?php printf('%s?item_id=%s', 'product.php', $item['item_id']); ?>"
                     ><img
-                      src="./assets/products/13.png"
+                      src="<?php echo $item['item_image'] ?? "./assets/products/13.png";?>"
                       alt="product1"
                       class="img-fluid"
                   /></a>
                   <div class="text-center">
-                    <h6>Apple iPhone X</h6>
+                    <h6><?php echo $item['item_name'] ?? "Unknown"; ?></h6>
                     <div class="rating text-warning font-size-12">
                       <span>
                         <i class="fas fa-star"></i>
@@ -44,319 +63,29 @@
                       </span>
                     </div>
                     <div class="price py-2">
-                      <span>₺4999</span>
+                      <span>₺<?php echo $item['item_price'] ?? 0 ?></span>
                     </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
+                    <form method="POST">
+  <input type="hidden" name="item_id" value="<?php echo $item['item_id'] ?? "1" ?>">
+  <input type="hidden" name="user_id" value="<?php echo 1; ?>">
+  <?php 
+  if(in_array($item['item_id'], $in_cart ?? [])){
+echo '<button type="submit" disabled class="btn btn-success font-size-12">
+Sepette
+</button>';
+  } else {
+    echo '<button type="submit" name="special_price_submit" class="btn btn-warning font-size-12">
+    Sepete Ekle
+  </button>';
+  };
+  ?>
+</form>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="grid-item Samsung border">
-              <div class="item py-2" style="width: 200px">
-                <div class="product font-rale">
-                  <a href="#"
-                    ><img
-                      src="./assets/products/11.png"
-                      alt="product1"
-                      class="img-fluid"
-                  /></a>
-                  <div class="text-center">
-                    <h6>Samsung Galaxy 8</h6>
-                    <div class="rating text-warning font-size-12">
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="far fa-star"></i>
-                      </span>
-                    </div>
-                    <div class="price py-2">
-                      <span>₺1299</span>
-                    </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid-item Redmi border">
-              <div class="item py-2" style="width: 200px">
-                <div class="product font-rale">
-                  <a href="#"
-                    ><img
-                      src="./assets/products/3.png"
-                      alt="product1"
-                      class="img-fluid"
-                  /></a>
-                  <div class="text-center">
-                    <h6>Redmi Note 7 Pro</h6>
-                    <div class="rating text-warning font-size-12">
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="far fa-star"></i>
-                      </span>
-                    </div>
-                    <div class="price py-2">
-                      <span>₺1399</span>
-                    </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid-item Apple border">
-              <div class="item py-2" style="width: 200px">
-                <div class="product font-rale">
-                  <a href="#"
-                    ><img
-                      src="./assets/products/14.png"
-                      alt="product1"
-                      class="img-fluid"
-                  /></a>
-                  <div class="text-center">
-                    <h6>Apple iPhone 6S</h6>
-                    <div class="rating text-warning font-size-12">
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="far fa-star"></i>
-                      </span>
-                    </div>
-                    <div class="price py-2">
-                      <span>₺1099</span>
-                    </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid-item Samsung border">
-              <div class="item py-2" style="width: 200px">
-                <div class="product font-rale">
-                  <a href="#"
-                    ><img
-                      src="./assets/products/12.png"
-                      alt="product1"
-                      class="img-fluid"
-                  /></a>
-                  <div class="text-center">
-                    <h6>Samsung Galaxy S9</h6>
-                    <div class="rating text-warning font-size-12">
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="far fa-star"></i>
-                      </span>
-                    </div>
-                    <div class="price py-2">
-                      <span>₺1899</span>
-                    </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid-item Samsung border">
-              <div class="item py-2" style="width: 200px">
-                <div class="product font-rale">
-                  <a href="#"
-                    ><img
-                      src="./assets/products/11.png"
-                      alt="product1"
-                      class="img-fluid"
-                  /></a>
-                  <div class="text-center">
-                    <h6>Samsung Galaxy S5</h6>
-                    <div class="rating text-warning font-size-12">
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="far fa-star"></i>
-                      </span>
-                    </div>
-                    <div class="price py-2">
-                      <span>₺1499</span>
-                    </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid-item Redmi border">
-              <div class="item py-2" style="width: 200px">
-                <div class="product font-rale">
-                  <a href="#"
-                    ><img
-                      src="./assets/products/8.png"
-                      alt="product1"
-                      class="img-fluid"
-                  /></a>
-                  <div class="text-center">
-                    <h6>Redmi Black Spec Pro</h6>
-                    <div class="rating text-warning font-size-12">
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="far fa-star"></i>
-                      </span>
-                    </div>
-                    <div class="price py-2">
-                      <span>₺1799</span>
-                    </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid-item Apple border">
-              <div class="item py-2" style="width: 200px">
-                <div class="product font-rale">
-                  <a href="#"
-                    ><img
-                      src="./assets/products/15.png"
-                      alt="product1"
-                      class="img-fluid"
-                  /></a>
-                  <div class="text-center">
-                    <h6>Apple iPhone 8</h6>
-                    <div class="rating text-warning font-size-12">
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="far fa-star"></i>
-                      </span>
-                    </div>
-                    <div class="price py-2">
-                      <span>₺2399</span>
-                    </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid-item Redmi border">
-              <div class="item py-2" style="width: 200px">
-                <div class="product font-rale">
-                  <a href="#"
-                    ><img
-                      src="./assets/products/5.png"
-                      alt="product1"
-                      class="img-fluid"
-                  /></a>
-                  <div class="text-center">
-                    <h6>Xiaomi Poco X2</h6>
-                    <div class="rating text-warning font-size-12">
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="fas fa-star"></i>
-                      </span>
-                      <span>
-                        <i class="far fa-star"></i>
-                      </span>
-                    </div>
-                    <div class="price py-2">
-                      <span>₺1399</span>
-                    </div>
-                    <button type="submit" class="btn btn-warning font-size-12">
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <?php }, $urunler)?>
+
           </div>
         </div>
       </section>

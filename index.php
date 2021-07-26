@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 // header ekleme
 include('header.php');
 
@@ -28,4 +28,5 @@ include('./templates/_blogs.php');
 
 // footer ekleme
 include('footer.php');
+ob_end_flush();
 ?>

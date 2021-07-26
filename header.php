@@ -70,7 +70,7 @@
       <!-- Primary Navigation-->
       <nav class="navbar navbar-expand-lg navbar-dark color-secondary-bg">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Eticaretim.com</a>
+          <a class="navbar-brand" href="index.php">Eticaretim.com</a>
           <button
             class="navbar-toggler"
             type="button"
@@ -85,7 +85,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 m-auto font-rubik">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"
+                <a class="nav-link active" aria-current="page" href="index.php"
                   >Ana Sayfa</a
                 >
               </li>
@@ -102,12 +102,12 @@
               </li>
             </ul>
             <form action="#" class="font-size-14 font-rale">
-              <a href="#" class="py-2 rounded-pill color-primary-bg">
+              <a href="cart.php" class="py-2 rounded-pill color-primary-bg">
                 <span class="font-size-16 px-2 text-white"
                   ><i class="fas fa-shopping-cart"></i
                 ></span>
                 <span class="px-3 py-2 rounded-pill text-dark bg-light GFG"
-                  >0</span
+                  ><?php echo count($product->getData('cart')) ?></span
                 >
               </a>
             </form>
